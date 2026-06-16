@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Аналітика')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<main class="container">
+    <h1>Аналітика</h1>
+    <p class="muted">Складні аналітичні запити за даними системи.</p>
+    <div class="cards">
+        <a class="card" th:href="@{/analytics/sales-by-category}">
+            <h3>Продаж за категоріями</h3>
+            <p>Кількість проданих одиниць і сума по кожній категорії за обраний період.</p>
+        </a>
+        <a class="card" th:href="@{/analytics/loyal-customers}">
+            <h3>Клієнти всіх категорій</h3>
+            <p>Постійні клієнти, які купували товари з усіх наявних категорій.</p>
+        </a>
+    </div>
+</main>
+</body>
+</html>

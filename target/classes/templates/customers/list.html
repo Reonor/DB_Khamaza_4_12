@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: pagehead('Клієнти')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<main class="container">
+    <div class="page-head">
+        <h1>Постійні клієнти</h1>
+        <a class="btn btn-primary" th:href="@{/customers/new}">+ Нова картка</a>
+    </div>
+    <div th:replace="~{fragments/layout :: messages}"></div>
+
+    <form class="toolbar" method="get" th:action="@{/customers}">
+        <input type="number" name="percent" min="0" max="100" placeholder="Відсоток" th:value="${percent}"/>
+        <input type="text" name="surname" placeholder="Пошук за прізвищем" th:value="${surname}"/>
+        <button class="btn" type="submit">Застосувати</button>
+        <a class="btn btn-ghost" th:href="@{/customers}">Скинути</a>
+    </form>
+
+    <table class="data">
+        <thead><tr>
+            <th>№ картки</th><th>ПІБ</th><th>Телефон</th><th>Місто</th><th>Знижка, %</th><th>Дії</th>
+        </tr></thead>
+        <tbody>
+        <tr th:each="c : ${customers}">
+            <td th:text="${c.cardNumber}">C001</td>
+            <td th:text="${c.fullName}">Прізвище Ім'я</td>
+            <td th:text="${c.phoneNumber}">+380...</td>
+            <td th:text="${c.city}">Київ</td>
+            <td th:text="${c.discountPercent}">0</td>
+            <td class="actions">
+                <a class="btn btn-sm" th:href="@{/customers/{n}/edit(n=${c.cardNumber})}">Редагувати</a>
+                <form sec:authorize="hasRole('MANAGER')" th:action="@{/customers/{n}/delete(n=${c.cardNumber})}" method="post"
+                      onsubmit="return confirm('Видалити картку клієнта?');">
+                    <button class="btn btn-sm btn-danger" type="submit">Видалити</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(customers)}"><td colspan="6" class="muted center">Нічого не знайдено.</td></tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

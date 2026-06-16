@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Звіт: Чеки')}"></head>
+<body class="report-page">
+<div th:replace="~{fragments/report :: runhead(${title})}"></div>
+<div th:replace="~{fragments/report :: runfoot}"></div>
+
+<main class="report-body">
+    <div th:replace="~{fragments/report :: toolbar}"></div>
+    <h1 class="report-title" th:text="${title}">Звіт: Чеки</h1>
+    <p class="report-period">Період: <span th:text="${from}">—</span> — <span th:text="${to}">—</span></p>
+
+    <table class="report-table">
+        <thead><tr>
+            <th>№ чека</th><th>Дата/час</th><th>Касир</th><th>Картка</th><th>Сума</th><th>ПДВ</th>
+        </tr></thead>
+        <tbody>
+        <tr th:each="c : ${checks}">
+            <td th:text="${c.checkNumber}">CH001</td>
+            <td th:text="${#temporals.format(c.printDate, 'yyyy-MM-dd HH:mm')}">2022-01-01 10:00</td>
+            <td th:text="${c.employeeName}">Касир</td>
+            <td th:text="${c.customerName} ?: '—'">—</td>
+            <td th:text="${#numbers.formatDecimal(c.sumTotal,1,2)}">0.00</td>
+            <td th:text="${#numbers.formatDecimal(c.vat,1,2)}">0.00</td>
+        </tr>
+        </tbody>
+        <tfoot th:if="${!#lists.isEmpty(checks)}">
+        <tr>
+            <td colspan="4" class="right"><strong>Разом за період:</strong></td>
+            <td colspan="2"><strong th:text="${#numbers.formatDecimal(#aggregates.sum(checks.![sumTotal]),1,2)}">0.00</strong></td>
+        </tr>
+        </tfoot>
+    </table>
+    <p class="report-count">Усього чеків: <span th:text="${#lists.size(checks)}">0</span></p>
+</main>
+</body>
+</html>

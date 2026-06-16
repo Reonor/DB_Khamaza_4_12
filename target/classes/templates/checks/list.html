@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: pagehead('Чеки')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<main class="container">
+    <div class="page-head">
+        <h1>Чеки</h1>
+        <a class="btn btn-primary" sec:authorize="hasRole('CASHIER')" th:href="@{/checks/new}">+ Новий продаж</a>
+    </div>
+    <div th:replace="~{fragments/layout :: messages}"></div>
+
+    <form class="toolbar" method="get" th:action="@{/checks}">
+        <label class="inline">З <input type="date" name="from" th:value="${from}"/></label>
+        <label class="inline">по <input type="date" name="to" th:value="${to}"/></label>
+        <select sec:authorize="hasRole('MANAGER')" name="employeeId">
+            <option value="">— усі касири —</option>
+            <option th:each="c : ${cashiers}" th:value="${c.idEmployee}"
+                    th:text="${c.fullName}" th:selected="${employeeId == c.idEmployee}">Касир</option>
+        </select>
+        <button class="btn" type="submit">Показати</button>
+        <a class="btn btn-ghost" th:href="@{/checks}">Скинути</a>
+    </form>
+
+    <table class="data">
+        <thead><tr>
+            <th>№ чека</th><th>Дата/час</th><th>Касир</th><th>Картка</th>
+            <th>Сума</th><th>ПДВ</th><th>Дії</th>
+        </tr></thead>
+        <tbody>
+        <tr th:each="c : ${checks}">
+            <td th:text="${c.checkNumber}">CH001</td>
+            <td th:text="${#temporals.format(c.printDate, 'yyyy-MM-dd HH:mm')}">2022-01-01 10:00</td>
+            <td th:text="${c.employeeName}">Касир</td>
+            <td th:text="${c.customerName} ?: '—'">—</td>
+            <td th:text="${#numbers.formatDecimal(c.sumTotal,1,2)}">0.00</td>
+            <td th:text="${#numbers.formatDecimal(c.vat,1,2)}">0.00</td>
+            <td class="actions">
+                <a class="btn btn-sm" th:href="@{/checks/{n}(n=${c.checkNumber})}">Деталі</a>
+                <form sec:authorize="hasRole('MANAGER')" th:action="@{/checks/{n}/delete(n=${c.checkNumber})}" method="post"
+                      onsubmit="return confirm('Видалити чек?');">
+                    <button class="btn btn-sm btn-danger" type="submit">Видалити</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(checks)}"><td colspan="7" class="muted center">Чеків не знайдено.</td></tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

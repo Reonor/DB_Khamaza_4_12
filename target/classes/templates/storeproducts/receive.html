@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Прийом партії')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<main class="container narrow">
+    <h1>Прийом нової партії</h1>
+    <table class="data vertical" th:object="${storeProduct}">
+        <tr><th>UPC</th><td th:text="*{upc}"></td></tr>
+        <tr><th>Товар</th><td th:text="*{productName}"></td></tr>
+        <tr><th>Поточна ціна</th><td th:text="${#numbers.formatDecimal(storeProduct.sellingPrice,1,2)}"></td></tr>
+        <tr><th>Поточна кількість</th><td th:text="*{productsNumber}"></td></tr>
+    </table>
+
+    <p class="muted">Прийом нової партії виконує переоцінку: уся наявна кількість набуде нової ціни,
+        а кількість збільшиться на прийняту.</p>
+
+    <form th:action="@{/store-products/{upc}/receive(upc=${storeProduct.upc})}" method="post" class="form">
+        <label>Нова ціна продажу
+            <input type="number" step="0.01" min="0" name="newPrice" required/>
+        </label>
+        <label>Кількість у новій партії
+            <input type="number" min="1" name="addedQty" required/>
+        </label>
+        <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Прийняти та переоцінити</button>
+            <a class="btn btn-ghost" th:href="@{/store-products}">Скасувати</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

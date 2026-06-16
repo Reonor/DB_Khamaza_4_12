@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Продаж за категоріями')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<main class="container">
+    <h1>Продаж за категоріями за період</h1>
+    <p class="muted">Запит 1 — багатотабличний (sale, store_product, product, category, receipt),
+        з групуванням за категорією, параметричний (період).</p>
+
+    <form class="toolbar" method="get" th:action="@{/analytics/sales-by-category}">
+        <label class="inline">З <input type="date" name="from" th:value="${from}" required/></label>
+        <label class="inline">по <input type="date" name="to" th:value="${to}" required/></label>
+        <button class="btn btn-primary" type="submit">Виконати запит</button>
+    </form>
+
+    <details class="sql-box">
+        <summary>Показати SQL-код запиту</summary>
+        <pre th:text="${sql}">SQL</pre>
+    </details>
+
+    <table class="data" th:if="${executed}">
+        <thead><tr><th>Категорія</th><th>Продано одиниць</th><th>Сума продажу</th></tr></thead>
+        <tbody>
+        <tr th:each="r : ${rows}">
+            <td th:text="${r.categoryName}">Категорія</td>
+            <td th:text="${r.totalUnits}">0</td>
+            <td th:text="${#numbers.formatDecimal(r.totalSum,1,2)}">0.00</td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(rows)}"><td colspan="3" class="muted center">За цей період продажів немає.</td></tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

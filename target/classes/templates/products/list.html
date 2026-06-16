@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: pagehead('Товари')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<main class="container">
+    <div class="page-head">
+        <h1>Товари</h1>
+        <a class="btn btn-primary" sec:authorize="hasRole('MANAGER')" th:href="@{/products/new}">+ Новий товар</a>
+    </div>
+    <div th:replace="~{fragments/layout :: messages}"></div>
+
+    <form class="toolbar" method="get" th:action="@{/products}">
+        <select name="categoryNumber">
+            <option value="">— усі категорії —</option>
+            <option th:each="c : ${categories}" th:value="${c.categoryNumber}"
+                    th:text="${c.categoryName}" th:selected="${categoryNumber == c.categoryNumber}">Категорія</option>
+        </select>
+        <input type="text" name="name" placeholder="Пошук за назвою" th:value="${name}"/>
+        <button class="btn" type="submit">Застосувати</button>
+        <a class="btn btn-ghost" th:href="@{/products}">Скинути</a>
+    </form>
+
+    <table class="data">
+        <thead><tr><th>ID</th><th>Назва</th><th>Виробник / характеристики</th><th>Категорія</th><th sec:authorize="hasRole('MANAGER')">Дії</th></tr></thead>
+        <tbody>
+        <tr th:each="p : ${products}">
+            <td th:text="${p.idProduct}">1</td>
+            <td th:text="${p.productName}">Назва</td>
+            <td th:text="${p.characteristics}">Характеристики</td>
+            <td th:text="${p.categoryName}">Категорія</td>
+            <td class="actions" sec:authorize="hasRole('MANAGER')">
+                <a class="btn btn-sm" th:href="@{/products/{id}/edit(id=${p.idProduct})}">Редагувати</a>
+                <form th:action="@{/products/{id}/delete(id=${p.idProduct})}" method="post"
+                      onsubmit="return confirm('Видалити товар?');">
+                    <button class="btn btn-sm btn-danger" type="submit">Видалити</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(products)}"><td colspan="5" class="muted center">Нічого не знайдено.</td></tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

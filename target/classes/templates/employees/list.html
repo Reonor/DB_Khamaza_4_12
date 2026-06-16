@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Працівники')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<main class="container">
+    <div class="page-head">
+        <h1>Працівники</h1>
+        <a class="btn btn-primary" th:href="@{/employees/new}">+ Новий працівник</a>
+    </div>
+
+    <div th:replace="~{fragments/layout :: messages}"></div>
+
+    <form class="toolbar" method="get" th:action="@{/employees}">
+        <select name="role">
+            <option value="">— усі посади —</option>
+            <option value="касир" th:selected="${role == 'касир'}">лише касири</option>
+        </select>
+        <input type="text" name="surname" placeholder="Пошук за прізвищем" th:value="${surname}"/>
+        <button class="btn" type="submit">Застосувати</button>
+        <a class="btn btn-ghost" th:href="@{/employees}">Скинути</a>
+    </form>
+
+    <table class="data">
+        <thead>
+        <tr>
+            <th>ID</th><th>ПІБ</th><th>Посада</th><th>Зарплата</th>
+            <th>Телефон</th><th>Місто</th><th>Дії</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="e : ${employees}">
+            <td th:text="${e.idEmployee}">E001</td>
+            <td th:text="${e.fullName}">Прізвище Ім'я</td>
+            <td th:text="${e.emplRole}">касир</td>
+            <td th:text="${#numbers.formatDecimal(e.salary,1,2)}">0.00</td>
+            <td th:text="${e.phoneNumber}">+380...</td>
+            <td th:text="${e.city}">Київ</td>
+            <td class="actions">
+                <a class="btn btn-sm" th:href="@{/employees/{id}/edit(id=${e.idEmployee})}">Редагувати</a>
+                <form th:action="@{/employees/{id}/delete(id=${e.idEmployee})}" method="post"
+                      onsubmit="return confirm('Видалити працівника?');">
+                    <button class="btn btn-sm btn-danger" type="submit">Видалити</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(employees)}">
+            <td colspan="7" class="muted center">Нічого не знайдено.</td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

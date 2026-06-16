@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Print controls (hidden on paper) -->
+<div th:fragment="toolbar" class="report-toolbar no-print">
+    <button class="btn btn-primary" onclick="window.print()">Друкувати</button>
+    <a class="btn btn-ghost" th:href="@{/reports}">До звітів</a>
+</div>
+
+<!-- Running header колонтитул (repeats on every printed page) -->
+<div th:fragment="runhead(title)" class="run-head">
+    <span class="rh-brand">ZLAGODA</span>
+    <span class="rh-title" th:text="${title}">Звіт</span>
+</div>
+
+<!-- Running footer колонтитул -->
+<div th:fragment="runfoot" class="run-foot">
+    <span>Згенеровано: <span th:text="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd HH:mm')}">—</span></span>
+    <span>АІС ZLAGODA</span>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Працівник')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<main class="container narrow">
+    <h1 th:text="${editing} ? 'Редагування працівника' : 'Новий працівник'">Працівник</h1>
+
+    <div class="alert alert-error" th:if="${formError}" th:text="${formError}"></div>
+
+    <form th:action="@{/employees/save}" th:object="${employee}" method="post" class="form">
+        <input type="hidden" th:field="*{idEmployee}"/>
+        <input type="hidden" name="editing" th:value="${editing}"/>
+
+        <div class="grid2">
+            <label>Прізвище
+                <input type="text" th:field="*{emplSurname}" required/>
+                <span class="field-error" th:if="${#fields.hasErrors('emplSurname')}" th:errors="*{emplSurname}"></span>
+            </label>
+            <label>Ім'я
+                <input type="text" th:field="*{emplName}" required/>
+                <span class="field-error" th:if="${#fields.hasErrors('emplName')}" th:errors="*{emplName}"></span>
+            </label>
+            <label>По батькові
+                <input type="text" th:field="*{emplPatronymic}"/>
+            </label>
+            <label>Посада
+                <select th:field="*{emplRole}" required>
+                    <option value="касир">касир</option>
+                    <option value="менеджер">менеджер</option>
+                </select>
+                <span class="field-error" th:if="${#fields.hasErrors('emplRole')}" th:errors="*{emplRole}"></span>
+            </label>
+            <label>Зарплата
+                <input type="number" step="0.01" min="0" th:field="*{salary}" required/>
+                <span class="field-error" th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}"></span>
+            </label>
+            <label>Дата народження
+                <input type="date" th:field="*{dateOfBirth}" required/>
+                <span class="field-error" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></span>
+            </label>
+            <label>Дата початку роботи
+                <input type="date" th:field="*{dateOfStart}" required/>
+            </label>
+            <label>Телефон
+                <input type="text" maxlength="13" th:field="*{phoneNumber}" placeholder="+380..." required/>
+                <span class="field-error" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></span>
+            </label>
+            <label>Місто
+                <input type="text" th:field="*{city}" required/>
+            </label>
+            <label>Вулиця
+                <input type="text" th:field="*{street}" required/>
+            </label>
+            <label>Індекс
+                <input type="text" maxlength="9" th:field="*{zipCode}" required/>
+            </label>
+        </div>
+
+        <fieldset class="auth-box">
+            <legend>Обліковий запис</legend>
+            <div class="grid2">
+                <label>Логін
+                    <input type="text" th:field="*{login}" required/>
+                    <span class="field-error" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></span>
+                </label>
+                <label>
+                    <span th:text="${editing} ? 'Новий пароль (залиште порожнім, щоб не змінювати)' : 'Пароль'">Пароль</span>
+                    <input type="password" th:field="*{password}" th:required="${!editing}"/>
+                </label>
+            </div>
+            <p class="muted small">Пароль зберігається у зашифрованому вигляді (BCrypt).</p>
+        </fieldset>
+
+        <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Зберегти</button>
+            <a class="btn btn-ghost" th:href="@{/employees}">Скасувати</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

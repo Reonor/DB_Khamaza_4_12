@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Категорія')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<main class="container narrow">
+    <h1 th:text="${editing} ? 'Редагування категорії' : 'Нова категорія'">Категорія</h1>
+    <form th:action="@{/categories/save}" th:object="${category}" method="post" class="form">
+        <input type="hidden" th:field="*{categoryNumber}"/>
+        <input type="hidden" name="editing" th:value="${editing}"/>
+        <label>Назва категорії
+            <input type="text" th:field="*{categoryName}" required/>
+            <span class="field-error" th:if="${#fields.hasErrors('categoryName')}" th:errors="*{categoryName}"></span>
+        </label>
+        <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Зберегти</button>
+            <a class="btn btn-ghost" th:href="@{/categories}">Скасувати</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

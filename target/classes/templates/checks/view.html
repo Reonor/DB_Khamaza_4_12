@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Чек')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}" class="no-print"></nav>
+<main class="container narrow">
+    <div th:replace="~{fragments/layout :: messages}"></div>
+
+    <div class="receipt" th:object="${view.check}">
+        <div class="receipt-head">
+            <h2>ZLAGODA</h2>
+            <p>Чек № <span th:text="*{checkNumber}">CH001</span></p>
+            <p th:text="${#temporals.format(view.check.printDate, 'yyyy-MM-dd HH:mm')}">2022-01-01 10:00</p>
+            <p>Касир: <span th:text="*{employeeName}">Касир</span></p>
+            <p th:if="*{customerName}">Клієнт: <span th:text="*{customerName}"></span> (картка <span th:text="*{cardNumber}"></span>)</p>
+        </div>
+
+        <table class="data">
+            <thead><tr><th>Товар</th><th>К-сть</th><th>Ціна</th><th>Сума</th></tr></thead>
+            <tbody>
+            <tr th:each="l : ${view.lines}">
+                <td th:text="${l.productName}">Товар</td>
+                <td th:text="${l.productNumber}">1</td>
+                <td th:text="${#numbers.formatDecimal(l.sellingPrice,1,2)}">0.00</td>
+                <td th:text="${#numbers.formatDecimal(l.lineTotal,1,2)}">0.00</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="receipt-totals">
+            <p>У т.ч. ПДВ: <strong th:text="${#numbers.formatDecimal(view.check.vat,1,2)}">0.00</strong></p>
+            <p class="grand">Усього: <strong th:text="${#numbers.formatDecimal(view.check.sumTotal,1,2)}">0.00</strong></p>
+        </div>
+    </div>
+
+    <div class="form-actions no-print">
+        <button class="btn btn-primary" onclick="window.print()">Друкувати</button>
+        <a class="btn btn-ghost" th:href="@{/checks}">До списку</a>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Звіт: Категорії')}"></head>
+<body class="report-page">
+<div th:replace="~{fragments/report :: runhead(${title})}"></div>
+<div th:replace="~{fragments/report :: runfoot}"></div>
+
+<main class="report-body">
+    <div th:replace="~{fragments/report :: toolbar}"></div>
+    <h1 class="report-title" th:text="${title}">Звіт: Категорії</h1>
+
+    <table class="report-table">
+        <thead><tr><th>Номер</th><th>Назва</th></tr></thead>
+        <tbody>
+        <tr th:each="c : ${categories}">
+            <td th:text="${c.categoryNumber}">1</td>
+            <td th:text="${c.categoryName}">Назва</td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="report-count">Усього записів: <span th:text="${#lists.size(categories)}">0</span></p>
+</main>
+</body>
+</html>

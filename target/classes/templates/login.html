@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Вхід')}"></head>
+<body class="login-page">
+<div class="login-card">
+    <h1>ZLAGODA</h1>
+    <p class="subtitle">Система обліку міні-супермаркету</p>
+
+    <div class="alert alert-error" th:if="${param.error}">Невірний логін або пароль.</div>
+    <div class="alert alert-success" th:if="${param.logout}">Ви вийшли з системи.</div>
+
+    <form th:action="@{/login}" method="post">
+        <label>Логін
+            <input type="text" name="username" autofocus required/>
+        </label>
+        <label>Пароль
+            <input type="password" name="password" required/>
+        </label>
+        <button type="submit" class="btn btn-primary block">Увійти</button>
+    </form>
+
+    <div class="login-hint">
+        <p>Демо-доступи:</p>
+        <ul>
+            <li>менеджер — <code>manager / manager123</code></li>
+            <li>касир — <code>cashier1 / cashier123</code></li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
