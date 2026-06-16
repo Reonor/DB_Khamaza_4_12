@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Клієнти всіх категорій')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<main class="container">
+    <h1>Клієнти, що купували товари всіх категорій</h1>
+    <p class="muted">Запит 2 — багатотабличний (customer_card, category, receipt, sale, store_product, product),
+        з подвійним запереченням (NOT EXISTS … NOT EXISTS).</p>
+
+    <details class="sql-box">
+        <summary>Показати SQL-код запиту</summary>
+        <pre th:text="${sql}">SQL</pre>
+    </details>
+
+    <table class="data" th:if="${executed}">
+        <thead><tr><th>№ картки</th><th>ПІБ клієнта</th><th>Телефон</th></tr></thead>
+        <tbody>
+        <tr th:each="r : ${rows}">
+            <td th:text="${r.cardNumber}">C001</td>
+            <td th:text="${r.fullName}">Прізвище Ім'я</td>
+            <td th:text="${r.phoneNumber}">+380...</td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(rows)}">
+            <td colspan="3" class="muted center">Немає клієнтів, що купували товари всіх категорій.</td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

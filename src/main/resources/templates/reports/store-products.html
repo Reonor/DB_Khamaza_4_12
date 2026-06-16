@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Звіт: Товари у магазині')}"></head>
+<body class="report-page">
+<div th:replace="~{fragments/report :: runhead(${title})}"></div>
+<div th:replace="~{fragments/report :: runfoot}"></div>
+
+<main class="report-body">
+    <div th:replace="~{fragments/report :: toolbar}"></div>
+    <h1 class="report-title" th:text="${title}">Звіт: Товари у магазині</h1>
+
+    <table class="report-table">
+        <thead><tr>
+            <th>UPC</th><th>Назва</th><th>Категорія</th><th>Ціна</th><th>К-сть</th><th>Акційний</th>
+        </tr></thead>
+        <tbody>
+        <tr th:each="sp : ${storeProducts}">
+            <td th:text="${sp.upc}">000000000001</td>
+            <td th:text="${sp.productName}">Назва</td>
+            <td th:text="${sp.categoryName}">Категорія</td>
+            <td th:text="${#numbers.formatDecimal(sp.sellingPrice,1,2)}">0.00</td>
+            <td th:text="${sp.productsNumber}">0</td>
+            <td th:text="${sp.promotionalProduct} ? 'так' : 'ні'">ні</td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="report-count">Усього записів: <span th:text="${#lists.size(storeProducts)}">0</span></p>
+</main>
+</body>
+</html>

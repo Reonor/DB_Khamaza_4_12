@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Звіт: Клієнти')}"></head>
+<body class="report-page">
+<div th:replace="~{fragments/report :: runhead(${title})}"></div>
+<div th:replace="~{fragments/report :: runfoot}"></div>
+
+<main class="report-body">
+    <div th:replace="~{fragments/report :: toolbar}"></div>
+    <h1 class="report-title" th:text="${title}">Звіт: Клієнти</h1>
+
+    <table class="report-table">
+        <thead><tr>
+            <th>№ картки</th><th>ПІБ</th><th>Телефон</th><th>Адреса</th><th>Знижка, %</th>
+        </tr></thead>
+        <tbody>
+        <tr th:each="c : ${customers}">
+            <td th:text="${c.cardNumber}">C001</td>
+            <td th:text="${c.fullName}">ПІБ</td>
+            <td th:text="${c.phoneNumber}">+380</td>
+            <td th:text="${(c.city ?: '') + ' ' + (c.street ?: '') + ' ' + (c.zipCode ?: '')}">Адреса</td>
+            <td th:text="${c.discountPercent}">0</td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="report-count">Усього записів: <span th:text="${#lists.size(customers)}">0</span></p>
+</main>
+</body>
+</html>

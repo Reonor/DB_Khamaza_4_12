@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!-- Reusable <head>. Usage: <head th:replace="~{fragments/layout :: pagehead('Title')}"></head>
+     Named "pagehead" (not "head") so the fragment selector does not collide with the
+     HTML <head> element name under Thymeleaf 3.1. -->
+<head th:fragment="pagehead(title)">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${title} + ' — ZLAGODA'">ZLAGODA</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}"/>
+</head>
+<body>
+
+<!-- Top navigation, role-aware -->
+<nav th:fragment="nav" class="topnav">
+    <a class="brand" th:href="@{/}">ZLAGODA</a>
+    <div class="links">
+        <a th:href="@{/products}">Товари</a>
+        <a th:href="@{/store-products}">Товари у магазині</a>
+        <a th:href="@{/customers}">Клієнти</a>
+        <a th:href="@{/checks}">Чеки</a>
+        <a sec:authorize="hasRole('CASHIER')" th:href="@{/checks/new}" class="accent">Новий продаж</a>
+        <a sec:authorize="hasRole('MANAGER')" th:href="@{/categories}">Категорії</a>
+        <a sec:authorize="hasRole('MANAGER')" th:href="@{/employees}">Працівники</a>
+        <a sec:authorize="hasRole('MANAGER')" th:href="@{/reports}">Звіти</a>
+        <a sec:authorize="hasRole('MANAGER')" th:href="@{/analytics}">Аналітика</a>
+    </div>
+    <div class="user">
+        <a th:href="@{/employees/me}" sec:authentication="principal.fullName">Користувач</a>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+            <button type="submit" class="link-btn">Вийти</button>
+        </form>
+    </div>
+</nav>
+
+<!-- Flash messages -->
+<div th:fragment="messages">
+    <div class="alert alert-success" th:if="${success}" th:text="${success}"></div>
+    <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
+</div>
+
+</body>
+</html>

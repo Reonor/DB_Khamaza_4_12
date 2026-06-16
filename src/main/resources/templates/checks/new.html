@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Новий продаж')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<main class="container">
+    <h1>Новий продаж</h1>
+    <div th:replace="~{fragments/layout :: messages}"></div>
+
+    <div class="terminal">
+        <section class="panel">
+            <h3>Додати товар</h3>
+            <form th:action="@{/checks/cart/add}" method="post" class="row-form">
+                <select name="upc" required>
+                    <option value="">— оберіть товар —</option>
+                    <option th:each="p : ${products}" th:value="${p.upc}"
+                            th:text="${p.productName} + ' — ' + ${#numbers.formatDecimal(p.sellingPrice,1,2)} + ' (зал.: ' + ${p.productsNumber} + ')'">
+                        Товар
+                    </option>
+                </select>
+                <input type="number" name="quantity" min="1" value="1" required/>
+                <button class="btn btn-primary" type="submit">Додати</button>
+            </form>
+
+            <h3>Картка клієнта</h3>
+            <form th:action="@{/checks/cart/card}" method="post" class="row-form">
+                <select name="cardNumber">
+                    <option value="">— без картки —</option>
+                    <option th:each="c : ${cards}" th:value="${c.cardNumber}"
+                            th:text="${c.fullName} + ' (' + ${c.discountPercent} + '%)'"
+                            th:selected="${cart.cardNumber == c.cardNumber}">Клієнт</option>
+                </select>
+                <button class="btn" type="submit">Застосувати</button>
+            </form>
+        </section>
+
+        <section class="panel">
+            <h3>Поточний чек</h3>
+            <table class="data">
+                <thead><tr><th>Товар</th><th>Ціна</th><th>К-сть</th><th>Сума</th><th></th></tr></thead>
+                <tbody>
+                <tr th:each="l : ${cart.lines}">
+                    <td th:text="${l.productName}">Товар</td>
+                    <td th:text="${#numbers.formatDecimal(l.unitPrice,1,2)}">0.00</td>
+                    <td th:text="${l.quantity}">1</td>
+                    <td th:text="${#numbers.formatDecimal(l.lineTotal,1,2)}">0.00</td>
+                    <td>
+                        <form th:action="@{/checks/cart/remove}" method="post">
+                            <input type="hidden" name="upc" th:value="${l.upc}"/>
+                            <button class="btn btn-sm btn-danger" type="submit">×</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${cart.empty}"><td colspan="5" class="muted center">Чек порожній.</td></tr>
+                </tbody>
+            </table>
+
+            <div class="cart-summary">
+                <p>Проміжний підсумок: <strong th:text="${#numbers.formatDecimal(cart.subtotal,1,2)}">0.00</strong></p>
+                <p class="muted small" th:if="${cart.cardNumber}">Знижку за карткою буде застосовано при оформленні.</p>
+            </div>
+
+            <div class="form-actions">
+                <form th:action="@{/checks/checkout}" method="post">
+                    <button class="btn btn-primary" type="submit" th:disabled="${cart.empty}">Оформити чек</button>
+                </form>
+                <form th:action="@{/checks/cart/clear}" method="post">
+                    <button class="btn btn-ghost" type="submit">Очистити</button>
+                </form>
+            </div>
+        </section>
+    </div>
+</main>
+</body>
+</html>

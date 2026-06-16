@@ -1,0 +1,201 @@
+/* =====================================================================
+   ZLAGODA AIS — application styles
+   Screen UI + print rules for reports (колонтитули, full-width table).
+   ===================================================================== */
+
+:root {
+    --bg: #f4f6f8;
+    --panel: #ffffff;
+    --ink: #1f2933;
+    --muted: #6b7280;
+    --line: #e2e8f0;
+    --brand: #1f7a4d;
+    --brand-dark: #155d3a;
+    --accent: #c2410c;
+    --danger: #b91c1c;
+    --radius: 8px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.45;
+}
+
+a { color: var(--brand-dark); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ----------------------------- Navigation -------------------------- */
+.topnav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: var(--brand);
+    color: #fff;
+    padding: 0 1.25rem;
+    height: 56px;
+}
+.topnav .brand { color: #fff; font-weight: 700; font-size: 1.15rem; letter-spacing: .5px; }
+.topnav .links { display: flex; gap: 1rem; flex: 1; flex-wrap: wrap; }
+.topnav .links a { color: #e8f5ee; font-size: .95rem; }
+.topnav .links a.accent { color: #ffe8d6; font-weight: 600; }
+.topnav .user { display: flex; align-items: center; gap: .75rem; }
+.topnav .user a { color: #fff; font-weight: 600; }
+.logout-form { margin: 0; }
+.link-btn {
+    background: none; border: 1px solid #ffffff66; color: #fff;
+    padding: .3rem .7rem; border-radius: var(--radius); cursor: pointer;
+}
+.link-btn:hover { background: #ffffff22; }
+
+/* ----------------------------- Layout ------------------------------ */
+.container { max-width: 1100px; margin: 1.5rem auto; padding: 0 1.25rem; }
+.container.narrow { max-width: 720px; }
+.page-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+h1 { font-size: 1.5rem; margin: .2rem 0 1rem; }
+.muted { color: var(--muted); }
+.small { font-size: .85rem; }
+.center { text-align: center; }
+.right { text-align: right; }
+
+/* ----------------------------- Cards ------------------------------- */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin: 1rem 0; }
+.card {
+    display: block; background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 1rem 1.1rem; color: var(--ink);
+}
+.card:hover { border-color: var(--brand); text-decoration: none; box-shadow: 0 2px 8px #0001; }
+.card h3 { margin: 0 0 .35rem; color: var(--brand-dark); }
+.card p { margin: 0; color: var(--muted); font-size: .9rem; }
+
+/* ----------------------------- Panels ------------------------------ */
+.panel {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 1rem 1.25rem; margin: 1rem 0;
+}
+
+/* ----------------------------- Tables ------------------------------ */
+table.data { width: 100%; border-collapse: collapse; background: var(--panel); margin-top: 1rem; border: 1px solid var(--line); }
+table.data th, table.data td { padding: .55rem .7rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
+table.data thead th { background: #eef4f0; color: var(--brand-dark); font-weight: 600; }
+table.data tr:hover td { background: #f9fbfa; }
+table.data.vertical th { width: 220px; background: #eef4f0; }
+.promo-row td { background: #fff7ed; }
+
+td.actions { display: flex; gap: .4rem; flex-wrap: wrap; }
+td.actions form { margin: 0; }
+
+/* ----------------------------- Buttons ----------------------------- */
+.btn {
+    display: inline-block; border: 1px solid var(--line); background: #fff; color: var(--ink);
+    padding: .45rem .9rem; border-radius: var(--radius); cursor: pointer; font-size: .9rem;
+}
+.btn:hover { background: #f1f5f9; text-decoration: none; }
+.btn-primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+.btn-primary:hover { background: var(--brand-dark); }
+.btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+.btn-ghost { background: transparent; }
+.btn-danger { background: #fff; border-color: var(--danger); color: var(--danger); }
+.btn-danger:hover { background: var(--danger); color: #fff; }
+.btn-sm { padding: .3rem .6rem; font-size: .82rem; }
+.btn.block { width: 100%; }
+
+/* ----------------------------- Forms ------------------------------- */
+.form label, .row-form, .toolbar { display: block; margin-bottom: .9rem; }
+.form label { font-weight: 600; font-size: .9rem; }
+.form input, .form select, .row-form input, .row-form select, .toolbar input, .toolbar select {
+    display: block; width: 100%; margin-top: .25rem; padding: .5rem .6rem;
+    border: 1px solid var(--line); border-radius: var(--radius); font-size: .95rem; background: #fff;
+}
+.form .check { display: flex; align-items: center; gap: .5rem; font-weight: 600; }
+.form .check input { width: auto; margin: 0; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem 1rem; }
+.auth-box { border: 1px solid var(--line); border-radius: var(--radius); padding: .75rem 1rem; margin: 1rem 0; }
+.auth-box legend { font-weight: 600; color: var(--brand-dark); padding: 0 .4rem; }
+.form-actions { display: flex; gap: .6rem; align-items: center; margin-top: 1rem; }
+.form-actions form { margin: 0; }
+.field-error { color: var(--danger); font-size: .82rem; font-weight: 400; display: block; margin-top: .2rem; }
+
+.toolbar { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
+.toolbar input, .toolbar select { width: auto; margin-top: 0; }
+.toolbar label.inline { display: inline-flex; align-items: center; gap: .4rem; font-weight: 600; margin: 0; }
+.row-form { display: flex; gap: .6rem; align-items: center; }
+.row-form input, .row-form select { width: auto; margin-top: 0; }
+
+/* ----------------------------- Alerts ------------------------------ */
+.alert { padding: .7rem 1rem; border-radius: var(--radius); margin: 1rem 0; border: 1px solid transparent; }
+.alert-success { background: #ecfdf5; border-color: #a7f3d0; color: #065f46; }
+.alert-error { background: #fef2f2; border-color: #fecaca; color: #991b1b; }
+
+/* ----------------------------- Login ------------------------------- */
+.login-page { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: var(--brand); }
+.login-card { background: #fff; border-radius: 12px; padding: 2rem; width: 360px; box-shadow: 0 10px 30px #0003; }
+.login-card h1 { text-align: center; color: var(--brand-dark); margin: 0; letter-spacing: 1px; }
+.login-card .subtitle { text-align: center; color: var(--muted); margin: .25rem 0 1.25rem; font-size: .9rem; }
+.login-card label { display: block; font-weight: 600; font-size: .9rem; margin-bottom: .8rem; }
+.login-card input { width: 100%; margin-top: .25rem; padding: .55rem .6rem; border: 1px solid var(--line); border-radius: var(--radius); }
+.login-hint { margin-top: 1.25rem; font-size: .82rem; color: var(--muted); border-top: 1px dashed var(--line); padding-top: .8rem; }
+.login-hint ul { margin: .3rem 0 0; padding-left: 1.1rem; }
+.login-hint code { background: #f1f5f9; padding: .1rem .35rem; border-radius: 4px; }
+
+/* ----------------------------- Sale terminal ----------------------- */
+.terminal { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+.cart-summary { margin-top: .8rem; font-size: 1.05rem; }
+.cart-summary .grand { font-size: 1.2rem; }
+
+/* ----------------------------- Receipt view ------------------------ */
+.receipt { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1.5rem; }
+.receipt-head { text-align: center; margin-bottom: 1rem; }
+.receipt-head h2 { margin: 0; color: var(--brand-dark); letter-spacing: 1px; }
+.receipt-head p { margin: .1rem 0; font-size: .9rem; }
+.receipt-totals { margin-top: 1rem; text-align: right; }
+.receipt-totals .grand { font-size: 1.25rem; }
+
+/* =====================================================================
+   PRINT — reports
+   Running header/footer (колонтитули) via position:fixed; the table uses
+   the full page width; no page numbers or addresses are printed.
+   ===================================================================== */
+.report-page { background: #fff; }
+.report-body { max-width: 1000px; margin: 1.5rem auto; padding: 0 1.25rem; }
+.report-toolbar { display: flex; gap: .6rem; margin-bottom: 1rem; }
+.report-title { text-align: center; }
+.report-period { text-align: center; color: var(--muted); margin-top: -.5rem; }
+.report-count { margin-top: .8rem; font-weight: 600; }
+.run-head, .run-foot { display: none; }
+
+.report-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+.report-table th, .report-table td { border: 1px solid #333; padding: .4rem .55rem; text-align: left; font-size: .9rem; }
+.report-table thead th { background: #e5e7eb; }
+
+@media print {
+    @page { margin: 22mm 12mm; }
+    body { background: #fff; }
+    .no-print, .topnav { display: none !important; }
+
+    /* колонтитули that repeat on each printed page */
+    .run-head, .run-foot {
+        display: flex; justify-content: space-between; align-items: center;
+        position: fixed; left: 0; right: 0; padding: 4mm 12mm; font-size: .8rem;
+    }
+    .run-head { top: 0; border-bottom: 1px solid #333; }
+    .run-foot { bottom: 0; border-top: 1px solid #333; color: #333; }
+    .rh-brand { font-weight: 700; letter-spacing: .5px; }
+
+    .report-body { margin: 0; max-width: none; padding: 0; }
+    .report-table { width: 100%; }
+    .report-table thead { display: table-header-group; } /* repeat header each page */
+    .report-table tr { page-break-inside: avoid; }
+
+    /* receipt printing */
+    .receipt { border: none; padding: 0; }
+}
+
+/* ----------------------------- Analytics SQL box ------------------- */
+.sql-box { margin: 1rem 0; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: .6rem 1rem; }
+.sql-box summary { cursor: pointer; font-weight: 600; color: var(--brand-dark); }
+.sql-box pre { margin: .75rem 0 0; padding: .9rem; background: #0f172a; color: #e2e8f0; border-radius: var(--radius); overflow-x: auto; font-size: .85rem; line-height: 1.4; }

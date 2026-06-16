@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Категорії')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<main class="container">
+    <div class="page-head">
+        <h1>Категорії товарів</h1>
+        <a class="btn btn-primary" th:href="@{/categories/new}">+ Нова категорія</a>
+    </div>
+    <div th:replace="~{fragments/layout :: messages}"></div>
+
+    <table class="data">
+        <thead><tr><th>Номер</th><th>Назва</th><th>Дії</th></tr></thead>
+        <tbody>
+        <tr th:each="c : ${categories}">
+            <td th:text="${c.categoryNumber}">1</td>
+            <td th:text="${c.categoryName}">Назва</td>
+            <td class="actions">
+                <a class="btn btn-sm" th:href="@{/categories/{id}/edit(id=${c.categoryNumber})}">Редагувати</a>
+                <form th:action="@{/categories/{id}/delete(id=${c.categoryNumber})}" method="post"
+                      onsubmit="return confirm('Видалити категорію?');">
+                    <button class="btn btn-sm btn-danger" type="submit">Видалити</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(categories)}"><td colspan="3" class="muted center">Порожньо.</td></tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

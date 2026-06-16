@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: pagehead('Головна')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+
+<main class="container">
+    <h1>Вітаємо, <span th:text="${fullName}">користувач</span>!</h1>
+    <p class="muted" sec:authorize="hasRole('MANAGER')">Ви увійшли як <strong>менеджер</strong> — повний доступ до системи.</p>
+    <p class="muted" sec:authorize="hasRole('CASHIER')">Ви увійшли як <strong>касир</strong>.</p>
+
+    <div class="cards">
+        <a class="card" sec:authorize="hasRole('CASHIER')" th:href="@{/checks/new}">
+            <h3>Новий продаж</h3><p>Створити чек, додати товари, застосувати картку клієнта.</p>
+        </a>
+        <a class="card" th:href="@{/checks}">
+            <h3>Чеки</h3><p>Перегляд та пошук чеків за період.</p>
+        </a>
+        <a class="card" th:href="@{/products}">
+            <h3>Товари</h3><p>Каталог товарів, пошук за назвою та категорією.</p>
+        </a>
+        <a class="card" th:href="@{/store-products}">
+            <h3>Товари у магазині</h3><p>Залишки, ціни, акційні позиції.</p>
+        </a>
+        <a class="card" th:href="@{/customers}">
+            <h3>Клієнти</h3><p>Картки постійних клієнтів.</p>
+        </a>
+        <a class="card" sec:authorize="hasRole('MANAGER')" th:href="@{/employees}">
+            <h3>Працівники</h3><p>Облік персоналу, пошук контактів.</p>
+        </a>
+        <a class="card" sec:authorize="hasRole('MANAGER')" th:href="@{/reports}">
+            <h3>Звіти</h3><p>Друк звітів та підсумки продажів.</p>
+        </a>
+    </div>
+</main>
+</body>
+</html>

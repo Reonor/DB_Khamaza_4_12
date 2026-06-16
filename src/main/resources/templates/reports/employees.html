@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Звіт: Працівники')}"></head>
+<body class="report-page">
+<div th:replace="~{fragments/report :: runhead(${title})}"></div>
+<div th:replace="~{fragments/report :: runfoot}"></div>
+
+<main class="report-body">
+    <div th:replace="~{fragments/report :: toolbar}"></div>
+    <h1 class="report-title" th:text="${title}">Звіт: Працівники</h1>
+
+    <table class="report-table">
+        <thead><tr>
+            <th>ID</th><th>ПІБ</th><th>Посада</th><th>Зарплата</th>
+            <th>Дата нар.</th><th>Дата поч.</th><th>Телефон</th><th>Адреса</th>
+        </tr></thead>
+        <tbody>
+        <tr th:each="e : ${employees}">
+            <td th:text="${e.idEmployee}">E001</td>
+            <td th:text="${e.fullName}">ПІБ</td>
+            <td th:text="${e.emplRole}">касир</td>
+            <td th:text="${#numbers.formatDecimal(e.salary,1,2)}">0.00</td>
+            <td th:text="${e.dateOfBirth}">2000-01-01</td>
+            <td th:text="${e.dateOfStart}">2020-01-01</td>
+            <td th:text="${e.phoneNumber}">+380</td>
+            <td th:text="${e.city} + ', ' + ${e.street} + ', ' + ${e.zipCode}">Адреса</td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="report-count">Усього записів: <span th:text="${#lists.size(employees)}">0</span></p>
+</main>
+</body>
+</html>

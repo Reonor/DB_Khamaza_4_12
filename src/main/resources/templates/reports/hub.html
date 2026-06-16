@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Звіти')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<main class="container">
+    <h1>Звіти</h1>
+    <p class="muted">Кожен звіт відкривається як попередній перегляд; кнопка «Друкувати» виводить його на друк
+        у повну ширину сторінки з колонтитулами.</p>
+
+    <div class="cards">
+        <a class="card" th:href="@{/reports/employees}"><h3>Працівники</h3><p>Повний перелік персоналу.</p></a>
+        <a class="card" th:href="@{/reports/customers}"><h3>Постійні клієнти</h3><p>Усі картки клієнтів.</p></a>
+        <a class="card" th:href="@{/reports/categories}"><h3>Категорії</h3><p>Перелік категорій.</p></a>
+        <a class="card" th:href="@{/reports/products}"><h3>Товари</h3><p>Каталог товарів.</p></a>
+        <a class="card" th:href="@{/reports/store-products}"><h3>Товари у магазині</h3><p>Залишки та ціни.</p></a>
+    </div>
+
+    <section class="panel">
+        <h3>Звіт по чеках за період</h3>
+        <form class="toolbar" method="get" th:action="@{/reports/checks}">
+            <label class="inline">З <input type="date" name="from" required/></label>
+            <label class="inline">по <input type="date" name="to" required/></label>
+            <select name="employeeId">
+                <option value="">— усі касири —</option>
+                <option th:each="e : ${employees}" th:value="${e.idEmployee}" th:text="${e.fullName}">Касир</option>
+            </select>
+            <button class="btn btn-primary" type="submit">Сформувати</button>
+        </form>
+    </section>
+
+    <section class="panel">
+        <h3>Підсумки продажів за період</h3>
+        <form class="toolbar" method="get" th:action="@{/reports/sales-summary}">
+            <label class="inline">З <input type="date" name="from" required/></label>
+            <label class="inline">по <input type="date" name="to" required/></label>
+            <select name="employeeId">
+                <option value="">— (необов'язково) касир —</option>
+                <option th:each="e : ${employees}" th:value="${e.idEmployee}" th:text="${e.fullName}">Касир</option>
+            </select>
+            <button class="btn btn-primary" type="submit">Сформувати</button>
+        </form>
+        <p class="muted small">Звіт показує загальну суму продажів за період, суму обраного касира та
+            (за бажанням) кількість проданого товару.</p>
+    </section>
+</main>
+</body>
+</html>

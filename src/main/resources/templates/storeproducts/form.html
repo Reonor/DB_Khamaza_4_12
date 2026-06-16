@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Товар у магазині')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<main class="container narrow">
+    <h1 th:text="${editing} ? 'Редагування товару у магазині' : 'Новий товар у магазині'">Товар у магазині</h1>
+
+    <div class="alert alert-error" th:if="${formError}" th:text="${formError}"></div>
+
+    <form th:action="@{/store-products/save}" th:object="${storeProduct}" method="post" class="form">
+        <input type="hidden" th:field="*{upc}"/>
+        <input type="hidden" name="editing" th:value="${editing}"/>
+
+        <label th:if="${editing}">UPC
+            <input type="text" th:value="*{upc}" disabled/>
+        </label>
+
+        <label>Товар (тип)
+            <select th:field="*{idProduct}" required>
+                <option value="">— оберіть товар —</option>
+                <option th:each="p : ${products}" th:value="${p.idProduct}" th:text="${p.productName}">Товар</option>
+            </select>
+            <span class="field-error" th:if="${#fields.hasErrors('idProduct')}" th:errors="*{idProduct}"></span>
+        </label>
+
+        <label class="check">
+            <input type="checkbox" th:field="*{promotionalProduct}" id="promoToggle"/>
+            Акційний товар (ціна = базова × 0,8)
+        </label>
+
+        <label id="baseBox">Базовий звичайний товар (для акції)
+            <select th:field="*{upcProm}">
+                <option value="">— не обрано —</option>
+                <option th:each="r : ${regulars}" th:value="${r.upc}"
+                        th:text="${r.productName} + ' — ' + ${#numbers.formatDecimal(r.sellingPrice,1,2)}">База</option>
+            </select>
+            <small class="muted">Для акційного товару ціна обчислюється автоматично від обраного звичайного.</small>
+        </label>
+
+        <label id="priceBox">Ціна продажу (для звичайного товару)
+            <input type="number" step="0.01" min="0" th:field="*{sellingPrice}"/>
+            <span class="field-error" th:if="${#fields.hasErrors('sellingPrice')}" th:errors="*{sellingPrice}"></span>
+        </label>
+
+        <label>Кількість одиниць
+            <input type="number" min="0" th:field="*{productsNumber}" required/>
+            <span class="field-error" th:if="${#fields.hasErrors('productsNumber')}" th:errors="*{productsNumber}"></span>
+        </label>
+
+        <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Зберегти</button>
+            <a class="btn btn-ghost" th:href="@{/store-products}">Скасувати</a>
+        </div>
+    </form>
+</main>
+<script>
+    (function () {
+        var toggle = document.getElementById('promoToggle');
+        var baseBox = document.getElementById('baseBox');
+        var priceBox = document.getElementById('priceBox');
+        function sync() {
+            var promo = toggle.checked;
+            baseBox.style.display = promo ? '' : 'none';
+            priceBox.style.display = promo ? 'none' : '';
+        }
+        toggle.addEventListener('change', sync);
+        sync();
+    })();
+</script>
+</body>
+</html>

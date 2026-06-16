@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: pagehead('Товари у магазині')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<main class="container">
+    <div class="page-head">
+        <h1>Товари у магазині</h1>
+        <a class="btn btn-primary" sec:authorize="hasRole('MANAGER')" th:href="@{/store-products/new}">+ Додати</a>
+    </div>
+    <div th:replace="~{fragments/layout :: messages}"></div>
+
+    <form class="toolbar" method="get" th:action="@{/store-products}">
+        <select name="promo">
+            <option value="all" th:selected="${promo == 'all'}">усі</option>
+            <option value="promo" th:selected="${promo == 'promo'}">лише акційні</option>
+            <option value="regular" th:selected="${promo == 'regular'}">лише звичайні</option>
+        </select>
+        <select name="sort">
+            <option value="quantity" th:selected="${sort == 'quantity'}">за кількістю</option>
+            <option value="name" th:selected="${sort == 'name'}">за назвою</option>
+            <option value="price" th:selected="${sort == 'price'}">за ціною</option>
+        </select>
+        <input type="text" name="name" placeholder="Пошук за назвою" th:value="${name}"/>
+        <input type="text" name="upc" placeholder="Пошук за UPC" th:value="${upc}"/>
+        <button class="btn" type="submit">Застосувати</button>
+        <a class="btn btn-ghost" th:href="@{/store-products}">Скинути</a>
+    </form>
+
+    <table class="data">
+        <thead><tr>
+            <th>UPC</th><th>Назва</th><th>Категорія</th><th>Ціна</th>
+            <th>К-сть</th><th>Акційний</th><th sec:authorize="hasRole('MANAGER')">Дії</th>
+        </tr></thead>
+        <tbody>
+        <tr th:each="sp : ${storeProducts}" th:classappend="${sp.promotionalProduct} ? 'promo-row' : ''">
+            <td th:text="${sp.upc}">000000000001</td>
+            <td th:text="${sp.productName}">Назва</td>
+            <td th:text="${sp.categoryName}">Категорія</td>
+            <td th:text="${#numbers.formatDecimal(sp.sellingPrice,1,2)}">0.00</td>
+            <td th:text="${sp.productsNumber}">0</td>
+            <td th:text="${sp.promotionalProduct} ? 'так' : 'ні'">ні</td>
+            <td class="actions" sec:authorize="hasRole('MANAGER')">
+                <a class="btn btn-sm" th:href="@{/store-products/{upc}/edit(upc=${sp.upc})}">Редагувати</a>
+                <a class="btn btn-sm" th:href="@{/store-products/{upc}/receive(upc=${sp.upc})}">Прийняти партію</a>
+                <form th:action="@{/store-products/{upc}/delete(upc=${sp.upc})}" method="post"
+                      onsubmit="return confirm('Видалити товар у магазині?');">
+                    <button class="btn btn-sm btn-danger" type="submit">Видалити</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(storeProducts)}"><td colspan="7" class="muted center">Нічого не знайдено.</td></tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

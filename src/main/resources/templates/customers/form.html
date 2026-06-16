@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Картка клієнта')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<main class="container narrow">
+    <h1 th:text="${editing} ? 'Редагування картки' : 'Нова картка клієнта'">Картка клієнта</h1>
+    <form th:action="@{/customers/save}" th:object="${customer}" method="post" class="form">
+        <input type="hidden" th:field="*{cardNumber}"/>
+        <input type="hidden" name="editing" th:value="${editing}"/>
+
+        <div class="grid2">
+            <label>Прізвище
+                <input type="text" th:field="*{custSurname}" required/>
+                <span class="field-error" th:if="${#fields.hasErrors('custSurname')}" th:errors="*{custSurname}"></span>
+            </label>
+            <label>Ім'я
+                <input type="text" th:field="*{custName}" required/>
+                <span class="field-error" th:if="${#fields.hasErrors('custName')}" th:errors="*{custName}"></span>
+            </label>
+            <label>По батькові
+                <input type="text" th:field="*{custPatronymic}"/>
+            </label>
+            <label>Телефон
+                <input type="text" maxlength="13" th:field="*{phoneNumber}" placeholder="+380..." required/>
+                <span class="field-error" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></span>
+            </label>
+            <label>Місто
+                <input type="text" th:field="*{city}"/>
+            </label>
+            <label>Вулиця
+                <input type="text" th:field="*{street}"/>
+            </label>
+            <label>Індекс
+                <input type="text" maxlength="9" th:field="*{zipCode}"/>
+            </label>
+            <label>Відсоток знижки
+                <input type="number" min="0" max="100" th:field="*{discountPercent}" required/>
+                <span class="field-error" th:if="${#fields.hasErrors('discountPercent')}" th:errors="*{discountPercent}"></span>
+            </label>
+        </div>
+
+        <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Зберегти</button>
+            <a class="btn btn-ghost" th:href="@{/customers}">Скасувати</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

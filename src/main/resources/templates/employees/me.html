@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Мій профіль')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+<main class="container narrow">
+    <h1>Інформація про мене</h1>
+    <table class="data vertical" th:object="${employee}">
+        <tr><th>ID</th><td th:text="*{idEmployee}"></td></tr>
+        <tr><th>ПІБ</th><td th:text="*{fullName}"></td></tr>
+        <tr><th>Посада</th><td th:text="*{emplRole}"></td></tr>
+        <tr><th>Зарплата</th><td th:text="${#numbers.formatDecimal(employee.salary,1,2)}"></td></tr>
+        <tr><th>Дата народження</th><td th:text="*{dateOfBirth}"></td></tr>
+        <tr><th>Дата початку роботи</th><td th:text="*{dateOfStart}"></td></tr>
+        <tr><th>Телефон</th><td th:text="*{phoneNumber}"></td></tr>
+        <tr><th>Адреса</th><td><span th:text="*{city}"></span>, <span th:text="*{street}"></span>, <span th:text="*{zipCode}"></span></td></tr>
+        <tr><th>Логін</th><td th:text="*{login}"></td></tr>
+    </table>
+    <a class="btn" th:href="@{/}">На головну</a>
+</main>
+</body>
+</html>

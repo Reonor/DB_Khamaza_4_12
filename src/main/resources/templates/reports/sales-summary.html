@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: pagehead('Звіт: Підсумки продажів')}"></head>
+<body class="report-page">
+<div th:replace="~{fragments/report :: runhead(${title})}"></div>
+<div th:replace="~{fragments/report :: runfoot}"></div>
+
+<main class="report-body">
+    <div th:replace="~{fragments/report :: toolbar}"></div>
+    <h1 class="report-title" th:text="${title}">Звіт: Підсумки продажів</h1>
+    <p class="report-period">Період: <span th:text="${from}">—</span> — <span th:text="${to}">—</span></p>
+
+    <table class="report-table">
+        <tbody>
+        <tr>
+            <th>Загальна сума всіх чеків за період</th>
+            <td th:text="${#numbers.formatDecimal(totalAll,1,2)}">0.00</td>
+        </tr>
+        <tr th:if="${employee != null}">
+            <th>Сума чеків касира «<span th:text="${employee.fullName}">Касир</span>»</th>
+            <td th:text="${#numbers.formatDecimal(totalByEmployee,1,2)}">0.00</td>
+        </tr>
+        <tr th:if="${storeProduct != null}">
+            <th>Кількість проданих одиниць «<span th:text="${storeProduct.productName}">Товар</span>»</th>
+            <td th:text="${productQty}">0</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="no-print extra-params">
+        <h3>Уточнити параметри</h3>
+        <form class="toolbar" method="get" th:action="@{/reports/sales-summary}">
+            <input type="hidden" name="from" th:value="${from}"/>
+            <input type="hidden" name="to" th:value="${to}"/>
+            <select name="employeeId">
+                <option value="">— сума касира (необов'язково) —</option>
+                <option th:each="e : ${employees}" th:value="${e.idEmployee}" th:text="${e.fullName}">Касир</option>
+            </select>
+            <select name="upc">
+                <option value="">— кількість товару (необов'язково) —</option>
+                <option th:each="sp : ${storeProducts}" th:value="${sp.upc}" th:text="${sp.productName}">Товар</option>
+            </select>
+            <button class="btn btn-primary" type="submit">Оновити</button>
+        </form>
+    </div>
+</main>
+</body>
+</html>
